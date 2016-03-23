@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     --no-interaction \
     --no-progress \
     --prefer-dist \
-    laravel/laravel /var/www/html \
+    laravel/laravel /var/www/html ~5.2.0 \
     && rm -f /var/www/html/database/migrations/*.php \
     /var/www/html/app/Users.php \
     && apt-get clean \
