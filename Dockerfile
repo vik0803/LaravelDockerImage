@@ -27,5 +27,5 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 RUN chown -R www-data:www-data /var/www/html
-COPY apache2.conf /etc/apache2/
+RUN sed -i 's/DocumentRoot \/var\/www\/html/DocumentRoot \/var\/www\/html\/public/g' /etc/apache2/apache2.conf
 WORKDIR /var/www/html
