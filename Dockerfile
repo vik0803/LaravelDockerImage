@@ -1,5 +1,5 @@
 FROM gliderlabs/alpine
-MAINTAINER cheezykins - https://github.com/cheezykins
+MAINTAINER Chris Stretton - https://github.com/cheezykins
 
 RUN apk --no-cache add \
 	-X http://dl-4.alpinelinux.org/alpine/edge/testing \ 
