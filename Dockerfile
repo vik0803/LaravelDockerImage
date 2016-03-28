@@ -1,5 +1,5 @@
 FROM php:5.6-apache
-MAINTAINER cheezykins - https://github.com/cheezykins
+MAINTAINER Chris Stretton - https://github.com/cheezykins
 RUN a2enmod rewrite
 WORKDIR /var/www
 RUN apt-get update && apt-get install --no-install-recommends -y \
