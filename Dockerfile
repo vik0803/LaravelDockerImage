@@ -1,31 +1,44 @@
-FROM php:5.6-apache
-RUN a2enmod rewrite
-WORKDIR /var/www
-RUN apt-get update && apt-get install --no-install-recommends -y \
-    zlib1g-dev \
-    mysql-client \
-    git \
-    && docker-php-ext-install -j$(nproc) \
-    mbstring \
-    zip \
-    mysql \
-    pdo \
-    pdo_mysql \
-    && pecl install spl_types \
-    && docker-php-ext-enable spl_types \
-    && curl -sS https://getcomposer.org/installer | php \
-    && mv composer.phar /usr/local/bin/composer \
-    && composer create-project \
+FROM gliderlabs/alpine
+MAINTAINER cheezykins - https://github.com/cheezykins
+
+RUN apk --no-cache add \
+	-X http://dl-4.alpinelinux.org/alpine/edge/testing \ 
+	apache2 \
+	php7 \
+	php7-apache2 \
+	php7-curl \
+	php7-gd \
+	php7-json \
+	php7-mbstring \
+	php7-opcache \
+	php7-openssl \
+	php7-pdo_mysql \
+	php7-phar \
+	php7-session \
+	php7-zlib \
+	&& ln -s /usr/bin/php7 /usr/bin/php
+
+RUN apk --no-cache add \
+	--virtual build-dependencies \
+	curl \
+	git \
+	&& curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+	&& mkdir /app /run/apache2 \
+	&& sed -i 's/^DocumentRoot ".*/DocumentRoot "\/app\/public"/g' /etc/apache2/httpd.conf \
+	&& sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/httpd.conf \
+	&& sed -i 's/Directory "\/var\/www\/localhost\/htdocs"/Directory "\/app\/public"/g' /etc/apache2/httpd.conf \
+	&& composer create-project \
     --no-ansi \
     --no-dev \
     --no-interaction \
     --no-progress \
     --prefer-dist \
-    laravel/laravel /var/www/html ~5.2.0 \
-    && rm -f /var/www/html/database/migrations/*.php \
-    /var/www/html/app/Users.php \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-RUN chown -R www-data:www-data /var/www/html
-RUN sed -i 's/DocumentRoot \/var\/www\/html/DocumentRoot \/var\/www\/html\/public/g' /etc/apache2/apache2.conf
-WORKDIR /var/www/html
+    laravel/laravel /app ~5.2.0 \
+    && rm -f /app/database/migrations/*.php \
+    && apk del build-dependencies \
+    && chown -R apache:apache /app
+
+ONBUILD RUN composer self-update && cd /app && composer update
+
+EXPOSE 80
+CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
