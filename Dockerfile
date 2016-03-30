@@ -14,8 +14,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     pdo_mysql \
     && pecl install spl_types \
     && docker-php-ext-enable spl_types \
-    && curl -sS https://getcomposer.org/installer | php \
-    && mv composer.phar /usr/local/bin/composer \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && composer create-project \
     --no-ansi \
     --no-dev \
