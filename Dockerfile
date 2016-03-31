@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     mbstring \
     zip \
     mysql \
+    bcmath \
     pdo \
     pdo_mysql \
     && pecl install spl_types \
