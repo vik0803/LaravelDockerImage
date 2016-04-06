@@ -4,6 +4,7 @@ MAINTAINER Chris Stretton - https://github.com/cheezykins
 RUN apk --no-cache add \
 	-X http://dl-4.alpinelinux.org/alpine/edge/testing \ 
 	apache2 \
+	libwebp \
 	php7 \
 	php7-apache2 \
 	php7-curl \
