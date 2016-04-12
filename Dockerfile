@@ -29,5 +29,12 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     && rm -rf /var/lib/apt/lists/*
 RUN chown -R www-data:www-data /var/www/html
 RUN sed -i 's/DocumentRoot \/var\/www\/html/DocumentRoot \/var\/www\/html\/public/g' /etc/apache2/apache2.conf
-ONBUILD RUN composer self-update && cd /var/www/html && composer update
+ONBUILD RUN composer self-update \
+		&& cd /var/www/html \
+		&& composer update \
+		--no-ansi \
+		--no-dev \
+		--no-interaction \
+		--no-progress \
+		--prefer-dist
 WORKDIR /var/www/html
