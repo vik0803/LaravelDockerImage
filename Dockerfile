@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     zlib1g-dev \
     && ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h \
     && docker-php-ext-install -j$(nproc) \
+    bcmath \
     gmp \
     mbstring \
     mysql \
