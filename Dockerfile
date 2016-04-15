@@ -3,16 +3,19 @@ MAINTAINER Chris Stretton - https://github.com/cheezykins
 RUN a2enmod rewrite
 WORKDIR /var/www
 RUN apt-get update && apt-get install --no-install-recommends -y \
-    zlib1g-dev \
-    mysql-client \
     git \
+    libgmp10 \
+    libgmp-dev \
+    mysql-client \
+    zlib1g-dev \
+    && ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h \
     && docker-php-ext-install -j$(nproc) \
+    gmp \
     mbstring \
-    zip \
     mysql \
-    bcmath \
     pdo \
     pdo_mysql \
+    zip \
     && pecl install spl_types \
     && docker-php-ext-enable spl_types \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
