@@ -42,4 +42,3 @@ ONBUILD RUN composer self-update \
         --no-progress \
         --prefer-dist
 WORKDIR /var/www/html
-
