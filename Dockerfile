@@ -42,3 +42,4 @@ ONBUILD RUN composer self-update \
 		--no-progress \
 		--prefer-dist
 WORKDIR /var/www/html
+RUN php artisan jwt:generate && php artisan key:generate
